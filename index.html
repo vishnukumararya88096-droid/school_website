@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-site-verification" content="fc1QTY44MuNA3h5IbB4zWZuk8QOKQXHkKtvpTQyujn8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidya Vihar Public School</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #1B5E20; 
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+            letter-spacing: 1px;
+        }
+        header p {
+            color: #ffffff;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+        
+        /* Navbar Panel */
+        nav {
+            background-color: #2E7D32;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 20px;
+            position: relative;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+        .nav-links li {
+            margin: 0 15px;
+        }
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .nav-links li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hamburger Icon */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+        }
+        .menu-toggle .bar {
+            display: block;
+            width: 28px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+            border-radius: 2px;
+        }
+
+        /* Close Button inside Mobile Menu */
+        .menu-close-btn {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* Mobile Screen ke liye (Slide-out Menu) */
+        @media screen and (max-width: 900px) {
+            nav {
+                justify-content: flex-start;
+            }
+            .menu-toggle {
+                display: block;
+                z-index: 1001;
+            }
+            .menu-close-btn {
+                display: block;
+            }
+            .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 0;
+                flex-direction: column;
+                background-color: #1B5E20;
+                width: 250px;
+                height: 100vh;
+                padding-top: 70px;
+                transition: right 0.4s ease-in-out;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+                z-index: 1000;
+                align-items: center;
+            }
+            .nav-links li {
+                margin: 20px 0;
+                text-align: center;
+            }
+            .nav-links li a {
+                font-size: 18px;
+            }
+            .nav-links.active {
+                right: 0;
+            }
+        }
+
+        .hero-section {
+            background-color: white;
+            text-align: center;
+            padding: 50px 20px;
+            border-bottom: 2px solid #1B5E20;
+        }
+        .hero-section h2 {
+            color: #1B5E20;
+            font-size: 28px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .notice-board {
+            background-color: #f0fdf4;
+            border-left: 5px solid #1B5E20;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        footer {
+            background-color: #1B5E20;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+        }
+        footer p {
+            color: white;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>VIDYA VIHAR PUBLIC SCHOOL</h1>
+        <p>Education for a Better Tomorrow</p>
+    </header>
+
+    <!-- Navigation Menu with Hamburger & Close Button -->
+    <nav>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <button class="menu-close-btn" id="menu-close">&times;</button>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="admission.html">Admissions</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="login.html">🔐 Login Portal</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Welcome Section -->
+    <div class="hero-section">
+        <h2>Welcome to Vidya Vihar Public School</h2>
+        <p>We provide world-class education and focus on the all-round development of our students.</p>
+    </div>
+
+    <!-- Info & Notice Board -->
+    <div class="container">
+        <h3>About Our School</h3>
+        <p>Vidya Vihar Public School is dedicated to excellence in education. We aim to inspire and empower our students to achieve their highest potential in a supportive and challenging environment.</p>
+        
+        <div class="notice-board">
+            <h4>📢 Latest Announcements</h4>
+            <ul>
+                <li>Admissions for Session 2026-2027 are now open!</li>
+                <li>Half-yearly examinations starting from next month.</li>
+                <li>Upcoming inter-school sports competition on 25th Sept.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer with White Text -->
+    <footer>
+        <p>&copy; 2026 VIDYA VIHAR PUBLIC SCHOOL. All Rights Reserved.</p>
+        <p>Email: contact@vidyavihar.com | Phone: +91-9876543210</p>
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu Toggle & Close -->
+    <script>
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuClose = document.getElementById('menu-close');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.add('active');
+        });
+
+        menuClose.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
