@@ -167,6 +167,14 @@
             border-radius: 12px; 
         }
 
+        /* Mobile Responsive Fix for Swiper Slider */
+        @media screen and (max-width: 768px) {
+            .swiper-slide {
+                width: 260px !important;
+                height: 180px !important;
+            }
+        }
+
         .container {
             max-width: 1000px;
             margin: 30px auto;
@@ -336,11 +344,9 @@
                     `;
                 });
                 
-                // Slides ko repeat karke loop smooth rakha hai bina dots ke
                 let slidesHTML = rawSlides + rawSlides + rawSlides + rawSlides;
                 container.innerHTML = slidesHTML;
 
-                // Initialize Swiper without dots
                 new Swiper(".mySwiper", {
                     effect: "coverflow",
                     grabCursor: true,
