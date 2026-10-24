@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Vidya Vihar Public School</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f9f9f9; 
+        }
+        header { 
+            background-color: #1B5E20; 
+            color: white; 
+            text-align: center; 
+            padding: 30px 20px; 
+        }
+        header h1 { 
+            margin: 0; 
+            font-size: 36px; 
+        }
+        header p { 
+            color: #ffffff; 
+            font-size: 18px; 
+            margin-top: 5px; 
+        }
+
+        /* Original Green Navbar Panel */
+        nav {
+            background-color: #2E7D32;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 20px;
+            position: relative;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+        .nav-links li {
+            margin: 0 15px;
+        }
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .nav-links li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hamburger Icon */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+        }
+        .menu-toggle .bar {
+            display: block;
+            width: 28px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+            border-radius: 2px;
+        }
+
+        /* Close Button inside Mobile Menu */
+        .menu-close-btn {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* Mobile Screen ke liye (Slide-out Menu) */
+        @media screen and (max-width: 900px) {
+            nav {
+                justify-content: flex-start;
+            }
+            .menu-toggle {
+                display: block;
+                z-index: 1001;
+            }
+            .menu-close-btn {
+                display: block;
+            }
+            .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 0;
+                flex-direction: column;
+                background-color: #1B5E20;
+                width: 250px;
+                height: 100vh;
+                padding-top: 70px;
+                transition: right 0.4s ease-in-out;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+                z-index: 1000;
+                align-items: center;
+            }
+            .nav-links li {
+                margin: 20px 0;
+                text-align: center;
+            }
+            .nav-links li a {
+                font-size: 18px;
+            }
+            .nav-links.active {
+                right: 0;
+            }
+        }
+
+        .container { 
+            max-width: 1100px; 
+            margin: 30px auto; 
+            background: white; 
+            padding: 30px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            border-radius: 8px; 
+            text-align: center; 
+        }
+        h2 { 
+            color: #1B5E20; 
+            margin-bottom: 25px;
+            border-bottom: 3px solid #1B5E20; 
+            display: inline-block; 
+            padding-bottom: 5px;
+        }
+        
+        /* Grid Layout for Gallery */
+        .gallery-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            gap: 20px; 
+        }
+        .gallery-card { 
+            border-radius: 8px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
+            cursor: pointer; 
+            transition: transform 0.3s; 
+            background: white; 
+        }
+        .gallery-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 15px rgba(0,0,0,0.25); 
+        }
+        .gallery-card img { 
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover; 
+            display: block; 
+            transition: transform 0.3s; 
+        }
+        .gallery-card:hover img { 
+            transform: scale(1.05); 
+        }
+
+        /* Lightbox / Pop-up Full screen Image */
+        #lightbox { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.9); 
+            z-index: 10000; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        #lightbox img { 
+            max-width: 90%; 
+            max-height: 90%; 
+            border-radius: 5px; 
+            box-shadow: 0 0 20px rgba(255,255,255,0.2); 
+        }
+        #lightbox .close-btn { 
+            position: absolute; 
+            top: 20px; 
+            right: 30px; 
+            color: white; 
+            font-size: 40px; 
+            cursor: pointer; 
+            font-weight: bold; 
+        }
+
+        /* Footer text color explicitly set to white */
+        footer {
+            background-color: #1B5E20;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+        }
+        footer p {
+            color: white;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>VIDYA VIHAR PUBLIC SCHOOL</h1>
+        <p>📸 School Photo Gallery 🖼️</p>
+    </header>
+
+    <!-- Navigation Menu with Correct Links, Hamburger & Close Button -->
+    <nav>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <button class="menu-close-btn" id="menu-close">&times;</button>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="admission.html">Admissions</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="login.html">🔐 Login Portal</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Campus & Events Gallery</h2>
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="mainGalleryGrid">
+            <h3 style="grid-column: 1 / -1; color: #555;">Loading beautiful memories...</h3>
+        </div>
+    </div>
+
+    <!-- Lightbox for Image Pop-up -->
+    <div id="lightbox" onclick="closeLightbox()">
+        <span class="close-btn">&times;</span>
+        <img id="lightboxImg" src="">
+    </div>
+
+    <!-- Footer with White Text -->
+    <footer>
+        <p>&copy; 2026 VIDYA VIHAR PUBLIC SCHOOL. All Rights Reserved.</p>
+        <p>Email: contact@vidyavihar.com | Phone: +91-9876543210</p>
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu Toggle & Close -->
+    <script>
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuClose = document.getElementById('menu-close');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.add('active');
+        });
+
+        menuClose.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
+    </script>
+
+    <!-- Firebase SDK & Gallery Fetch Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3XBCZ2ZTwfqT2y3EXrkW0LPEz4fj9tBc",
+            authDomain: "vidya-vihar-public-schoo-f3b61.firebaseapp.com",
+            projectId: "vidya-vihar-public-schoo-f3b61"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Lightbox Functions
+        window.openLightbox = function(url) {
+            document.getElementById('lightboxImg').src = url;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+        window.closeLightbox = function() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        // Fetch Gallery Images
+        async function loadFullGallery() {
+            const grid = document.getElementById("mainGalleryGrid");
+            try {
+                const q = query(collection(db, "gallery"), orderBy("timestamp", "desc"));
+                const snap = await getDocs(q);
+                
+                grid.innerHTML = ""; // Clear loading text
+                
+                if(snap.empty) { 
+                    grid.innerHTML = "<h3 style='grid-column: 1 / -1; color: #555;'>No photos uploaded yet.</h3>"; 
+                    return; 
+                }
+                
+                snap.forEach(docSnap => {
+                    const url = docSnap.data().imageUrl;
+                    grid.innerHTML += `
+                        <div class="gallery-card" onclick="openLightbox('${url}')">
+                            <img src="${url}" alt="School Moment">
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error loading gallery: ", error);
+                grid.innerHTML = "<h3 style='grid-column: 1 / -1; color: red;'>Failed to load images.</h3>";
+            }
+        }
+
+        // Load images when page is ready
+        window.addEventListener('DOMContentLoaded', loadFullGallery);
+    </script>
+</body>
+</html>

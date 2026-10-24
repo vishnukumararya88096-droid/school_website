@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Login - Vidya Vihar Public School</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #e8f5e9; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .login-card { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; border-top: 6px solid #1B5E20; }
+        h2 { color: #1B5E20; margin-bottom: 5px; }
+        p { color: #666; font-size: 14px; margin-bottom: 25px; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #444; font-size: 14px; }
+        select, input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; box-sizing: border-box; }
+        .login-btn { background-color: #1B5E20; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: background 0.2s; }
+        .login-btn:hover { background-color: #2E7D32; }
+        .back-link { display: inline-block; margin-top: 20px; color: #1B5E20; text-decoration: none; font-size: 14px; font-weight: bold; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>School Portal</h2>
+        <p>Select your role and login</p>
+        
+        <div class="form-group">
+            <label>Login Portal:</label>
+            <select id="portalRole" onchange="toggleFields()">
+                <option value="student">Student Portal</option>
+                <option value="teacher">Teacher Portal</option>
+                <option value="admin">Admin / Principal Portal</option>
+            </select>
+        </div>
+
+        <!-- Username / ID Field -->
+        <div class="form-group" id="usernameGroup">
+            <label id="usernameLabel">Admission No. / Username:</label>
+            <input type="text" id="loginUsername" placeholder="Enter ID / Admission No.">
+        </div>
+
+        <div class="form-group">
+            <label id="passwordLabel">Password / Passcode:</label>
+            <input type="password" id="loginPassword" placeholder="Enter Password">
+        </div>
+
+        <button class="login-btn" onclick="handleLogin()">Login</button>
+        <br>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <!-- Firebase SDK for verification -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3XBCZ2ZTwfqT2y3EXrkW0LPEz4fj9tBc",
+            authDomain: "vidya-vihar-public-schoo-f3b61.firebaseapp.com",
+            projectId: "vidya-vihar-public-schoo-f3b61",
+            storageBucket: "vidya-vihar-public-schoo-f3b61.firebasestorage.app",
+            messagingSenderId: "872134534556",
+            appId: "1:872134534556:web:7fb8ea167c2947b5c05459"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.toggleFields = function() {
+            let role = document.getElementById("portalRole").value;
+            let usernameGroup = document.getElementById("usernameGroup");
+            let usernameLabel = document.getElementById("usernameLabel");
+            let passwordLabel = document.getElementById("passwordLabel");
+
+            if(role === 'admin') {
+                usernameGroup.style.display = "none";
+                passwordLabel.innerText = "Admin Password:";
+            } else if(role === 'student') {
+                usernameGroup.style.display = "block";
+                usernameLabel.innerText = "Admission No. / Username:";
+                passwordLabel.innerText = "Password (Contact No.):";
+            } else if(role === 'teacher') {
+                usernameGroup.style.display = "block";
+                usernameLabel.innerText = "Employee ID:";
+                passwordLabel.innerText = "Password (Contact No.):";
+            }
+        }
+
+        window.handleLogin = async function() {
+            let role = document.getElementById("portalRole").value;
+            let password = document.getElementById("loginPassword").value;
+
+            if(role === 'admin') {
+                if(password === "12345") {
+                    window.location.href = "admin.html";
+                } else {
+                    alert("Incorrect Admin Password! (Default is 12345)");
+                }
+            } else if(role === 'student') {
+                let username = document.getElementById("loginUsername").value.trim();
+                if(!username || !password) {
+                    alert("Please enter Admission No. and Password!");
+                    return;
+                }
+
+                try {
+                    const q = query(collection(db, "students"), where("admissionNo", "==", username));
+                    const querySnapshot = await getDocs(q);
+
+                    if(querySnapshot.empty) {
+                        alert("Student not found with this Admission No.!");
+                        return;
+                    }
+
+                    let studentDoc = querySnapshot.docs[0];
+                    let studentData = studentDoc.data();
+                    let contact = studentData.contactNo || "";
+
+                    if(password === contact || password === "12345") {
+                        window.location.href = `student-dashboard.html?id=${studentDoc.id}`;
+                    } else {
+                        alert("Incorrect Password! (Use registered Contact Number)");
+                    }
+                } catch(error) {
+                    alert("Login failed: " + error.message);
+                }
+            } else if(role === 'teacher') {
+                let username = document.getElementById("loginUsername").value.trim();
+                if(!username || !password) {
+                    alert("Please enter Employee ID and Password!");
+                    return;
+                }
+
+                try {
+                    const q = query(collection(db, "teachers"), where("teacherId", "==", username));
+                    const querySnapshot = await getDocs(q);
+
+                    if(querySnapshot.empty) {
+                        alert("Teacher not found with this Employee ID!");
+                        return;
+                    }
+
+                    let teacherDoc = querySnapshot.docs[0];
+                    let teacherData = teacherDoc.data();
+                    let contact = teacherData.contactNo || "";
+
+                    if(password === contact || password === "12345") {
+                        window.location.href = `teacher-dashboard.html?id=${teacherDoc.id}`;
+                    } else {
+                        alert("Incorrect Password! (Use registered Contact Number)");
+                    }
+                } catch(error) {
+                    alert("Login failed: " + error.message);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - Vidya Vihar Public School</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f4f6f8; }
+        header { background-color: #0288d1; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { margin: 0; font-size: 24px; }
+        .logout-btn { background-color: #d32f2f; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px; }
+        .logout-btn:hover { background-color: #b71c1c; }
+        
+        .container { max-width: 900px; margin: 40px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 6px solid #0288d1; }
+        h2, h3 { color: #0288d1; border-bottom: 2px solid #e0e0e0; padding-bottom: 15px; }
+        
+        .profile-row { display: flex; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px; }
+        .profile-label { flex: 1; font-weight: bold; color: #555; font-size: 16px; }
+        .profile-value { flex: 2; color: #333; font-size: 16px; }
+        
+        .attendance-box { margin-top: 30px; background: #f9f9f9; padding: 20px; border-radius: 6px; border: 1px solid #ddd; }
+        
+        .inline-selector { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .inline-selector label { font-weight: bold; color: #555; font-size: 14px; }
+        .inline-selector select { padding: 8px 12px; font-size: 15px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold; color: #0288d1; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; }
+        th, td { padding: 10px; text-align: center; border: 1px solid #ddd; font-size: 14px; }
+        th { background-color: #0288d1; color: white; }
+        
+        .scrollable-table { max-height: 400px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🎓 Teacher Portal - Vidya Vihar Public School</h1>
+        <a href="login.html" class="logout-btn">Logout</a>
+    </header>
+
+    <div class="container">
+        <h2>👨‍🏫 My Personal Details</h2>
+        
+        <div class="profile-row"><div class="profile-label">Teacher Name:</div><div class="profile-value" id="display-teacherName">Loading...</div></div>
+        <div class="profile-row"><div class="profile-label">Employee ID:</div><div class="profile-value" id="display-teacherId">Loading...</div></div>
+        <div class="profile-row"><div class="profile-label">Subject / Specialization:</div><div class="profile-value" id="display-subject">Loading...</div></div>
+        <div class="profile-row"><div class="profile-label">Email Address:</div><div class="profile-value" id="display-email">Loading...</div></div>
+        <div class="profile-row"><div class="profile-label">Contact Number:</div><div class="profile-value" id="display-contactNo">Loading...</div></div>
+
+        <!-- Attendance View Section -->
+        <div class="attendance-box">
+            <h3>📅 My Month-wise Attendance Record</h3>
+            
+            <div class="inline-selector">
+                <label>Month & Year:</label>
+                <select id="viewMonth" onchange="loadAttendanceTable()">
+                    <option value="0" selected>January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+
+                <select id="viewYear" onchange="loadAttendanceTable()">
+                    <option value="2025">2025</option>
+                    <option value="2026" selected>2026</option>
+                    <option value="2027">2027</option>
+                </select>
+            </div>
+
+            <div class="scrollable-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Attendance Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTableBody">
+                        <!-- Loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Firebase SDK & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3XBCZ2ZTwfqT2y3EXrkW0LPEz4fj9tBc",
+            authDomain: "vidya-vihar-public-schoo-f3b61.firebaseapp.com",
+            projectId: "vidya-vihar-public-schoo-f3b61",
+            storageBucket: "vidya-vihar-public-schoo-f3b61.firebasestorage.app",
+            messagingSenderId: "872134534556",
+            appId: "1:872134534556:web:7fb8ea167c2947b5c05459"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let teacherId = urlParams.get('id');
+
+        let attendanceData = {};
+        let teacherDataGlobal = {};
+        const fields = ['teacherName', 'teacherId', 'subject', 'email', 'contactNo'];
+
+        async function fetchTeacherProfile() {
+            if (!teacherId) {
+                document.getElementById("display-teacherName").innerText = "No teacher session found.";
+                return;
+            }
+
+            try {
+                const docRef = doc(db, "teachers", teacherId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    teacherDataGlobal = docSnap.data();
+                    attendanceData = teacherDataGlobal.attendance || {};
+                    
+                    fields.forEach(field => {
+                        const container = document.getElementById(`display-${field}`);
+                        container.innerText = teacherDataGlobal[field] || 'N/A';
+                    });
+
+                    loadAttendanceTable();
+                } else {
+                    document.getElementById("display-teacherName").innerText = "Teacher record not found.";
+                }
+            } catch (error) {
+                console.error("Error fetching profile: ", error);
+            }
+        }
+
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        function getDaysInMonth(month, year) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+
+        window.loadAttendanceTable = function() {
+            let month = parseInt(document.getElementById("viewMonth").value);
+            let year = parseInt(document.getElementById("viewYear").value);
+            let totalDays = getDaysInMonth(month, year);
+            let tbody = document.getElementById("attendanceTableBody");
+            tbody.innerHTML = "";
+
+            for (let i = 1; i <= totalDays; i++) {
+                let dayStr = i < 10 ? "0" + i : "" + i;
+                let monthStr = (month + 1) < 10 ? "0" + (month + 1) : "" + (month + 1);
+                let dateKey = `${year}-${monthStr}-${dayStr}`;
+                let formattedDate = `${dayStr} ${monthNames[month].substring(0,3)} ${year}`;
+
+                let currentVal = attendanceData[dateKey] || "Not Marked";
+
+                let colorStyle = "color: #888;";
+                if (currentVal.includes("Present")) colorStyle = "color: #2e7d32; font-weight: bold;";
+                else if (currentVal.includes("Absent")) colorStyle = "color: #c62828; font-weight: bold;";
+
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td style="${colorStyle}">${currentVal}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchTeacherProfile);
+    </script>
+
+</body>
+</html>
