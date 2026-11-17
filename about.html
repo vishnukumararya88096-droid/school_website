@@ -12,10 +12,14 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f9f9f9;
             overflow-x: hidden;
+            height: 100%;
+        }
+
+        body {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -120,7 +124,7 @@
         /* ================= ABOUT CONTENT ================= */
         .container {
             max-width: 1100px;
-            width: 100%;
+            width: 90%;
             margin: 35px auto;
             padding: 40px;
             background-color: white;
@@ -133,14 +137,93 @@
         .container h2 {
             color: #1B5E20;
             font-size: 32px;
-            margin-bottom: 28px;
+            margin-bottom: 25px;
         }
 
         .container p {
             color: #333;
-            font-size: 19px;
+            font-size: 18px;
             line-height: 1.8;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
+        }
+
+        /* ================= PRINCIPAL DESK SECTION ================= */
+        .principal-desk {
+            background: #f1f8e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 35px;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .principal-img-box {
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .principal-img {
+            width: 140px;
+            height: 175px;
+            border-radius: 8px; /* Box style with rounded corners */
+            object-fit: cover;
+            border: 3px solid #1B5E20;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            background-color: #e0e0e0;
+        }
+
+        .principal-info h3 {
+            color: #1B5E20;
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .principal-info .designation {
+            color: #2E7D32;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .principal-message {
+            font-style: italic;
+            color: #444;
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .highlight-box {
+            background-color: #fafafa;
+            border-left: 4px solid #2E7D32;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .highlight-box h3 {
+            color: #1B5E20;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .features-list li {
+            font-size: 17px;
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.6;
         }
 
         /* ================= FOOTER ================= */
@@ -150,6 +233,7 @@
             text-align: center;
             padding: 20px 15px;
             margin-top: auto;
+            flex-shrink: 0;
         }
 
         footer p {
@@ -160,6 +244,19 @@
         }
 
         /* ================= MOBILE RESPONSIVE ================= */
+        @media screen and (max-width: 768px) {
+            .principal-desk {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+                gap: 15px;
+            }
+            .principal-img {
+                width: 120px;
+                height: 150px;
+            }
+        }
+
         @media screen and (max-width: 600px) {
             header {
                 min-height: 94px;
@@ -260,22 +357,22 @@
             }
 
             .container {
-                margin: 22px auto;
-                padding: 22px 18px;
+                margin: 20px auto;
+                padding: 20px 15px;
                 border-left: 5px solid #1B5E20;
                 border-radius: 10px;
-                width: 92%;
+                width: 94%;
             }
 
             .container h2 {
-                font-size: 23px;
-                margin-bottom: 20px;
+                font-size: 22px;
+                margin-bottom: 18px;
             }
 
             .container p {
                 font-size: 15px;
                 line-height: 1.7;
-                margin-bottom: 18px;
+                margin-bottom: 15px;
             }
 
             footer {
@@ -324,24 +421,57 @@
 
     <!-- ABOUT SCHOOL CONTENT -->
     <div class="container">
-        <h2>📖 About Our School</h2>
+        <h2>📖 About Vidya Vihar School</h2>
+
+        <!-- PRINCIPAL'S DESK MESSAGE -->
+        <div class="principal-desk">
+            <div class="principal-img-box">
+                <!-- Principal Photo loaded dynamically from Firebase -->
+                <img id="principalImg" src="principal.jpg" alt="Suryadeo Pandey - Principal" class="principal-img" onerror="this.src='https://via.placeholder.com/140x175?text=Principal'">
+            </div>
+            <div class="principal-info">
+                <h3>Suryadeo Pandey</h3>
+                <div class="designation">Principal, Vidya Vihar School</div>
+                <p class="principal-message">
+                    "Education is not merely a tool for earning a living, but the foundation of an enlightened society. At Vidya Vihar School, our core belief is that distance or financial constraints should never become a barrier for any child's dreams. We are committed to reaching remote areas through our dedicated transport and keeping quality education affordable, ensuring that no deserving student is ever left behind."
+                </p>
+            </div>
+        </div>
+
         <p>
-            <strong>Vidya Vihar School</strong> is dedicated to
-            excellence in education. We aim to inspire and empower
-            our students to achieve their highest potential in a
-            supportive and challenging environment.
+            Located in the serene surroundings of Basantpur Road, Katkamsandi, <strong>Vidya Vihar School</strong> is dedicated to molding young minds with strong moral values, discipline, and academic excellence. Affiliated under JAC norms (JAC Code: 210960 | UDISE Code: 20041003611), our institution acts as a second home where every student is nurtured to realize their true potential.
         </p>
-        <p>
-            Our campus is equipped with modern facilities,
-            experienced faculty, and a safe learning atmosphere
-            focused on overall student development, discipline,
-            and moral values.
+
+        <div class="highlight-box">
+            <h3>🌱 Our Eco-Friendly Campus</h3>
+            <p>
+                Our campus is richly adorned with greenery, trees, and plants, providing a peaceful and pollution-free atmosphere. This natural environment fosters healthy thinking and instills a deep sense of environmental responsibility in our students.
+            </p>
+        </div>
+
+        <div class="highlight-box">
+            <h3>🚌 Bridging Distances with Accessible Transport</h3>
+            <p>
+                Understanding the challenges faced by families in remote pockets, we operate dedicated <strong>school bus and van facilities</strong>. This ensures safe, timely, and comfortable commuting for students coming from distant areas, making quality education accessible right at their doorstep.
+            </p>
+        </div>
+
+        <h3 style="color: #1B5E20; font-size: 24px; margin-top: 30px; margin-bottom: 15px;">🌟 Why Parents Choose Us</h3>
+        <ul class="features-list">
+            <li>✅ <strong>Affordable & Quality Education:</strong> Premium learning standards maintained at an economical fee structure.</li>
+            <li>✅ <strong>Reaching Remote Learners:</strong> Strong transport connectivity bringing students from far-flung rural areas to regular schooling.</li>
+            <li>✅ <strong>Experienced Faculty:</strong> Passionate teachers dedicated to individual student attention and moral character building.</li>
+            <li>✅ <strong>Holistic Growth & School Functions:</strong> Equal emphasis on academics, discipline, and regular cultural events / functions on special occasions where students actively participate to build confidence.</li>
+        </ul>
+
+        <p style="margin-top: 25px;">
+            Together with our parents and community, we stride forward with a vision to empower every child for a brighter and more secure tomorrow.
         </p>
     </div>
 
     <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 VIDYA VIHAR SCHOOL. All Rights Reserved.</p>
+        <p>VIDYA VIHAR SCHOOL. All Rights Reserved.</p>
         <p>Email: vidyavihar06@gmail.com | Phone: +91-8002705409</p>
         <p>UDISE code: 20041003611 | JAC code: 210960</p>
     </footer>
@@ -369,6 +499,38 @@
         document.querySelectorAll(".nav-links a").forEach(link => {
             link.addEventListener("click", closeMenu);
         });
+    </script>
+
+    <!-- Firebase SDK to Fetch Principal Photo -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3XBCZ2ZTwfqT2y3EXrkW0LPEz4fj9tBc",
+            authDomain: "vidya-vihar-public-schoo-f3b61.firebaseapp.com",
+            projectId: "vidya-vihar-public-schoo-f3b61",
+            storageBucket: "vidya-vihar-public-schoo-f3b61.firebasestorage.app",
+            messagingSenderId: "872134534556",
+            appId: "1:872134534556:web:7fb8ea167c2947b5c05459"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function fetchPrincipalPhoto() {
+            try {
+                const docRef = doc(db, "settings", "principal");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists() && docSnap.data().imageUrl) {
+                    document.getElementById("principalImg").src = docSnap.data().imageUrl;
+                }
+            } catch (error) {
+                console.error("Error loading principal photo:", error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchPrincipalPhoto);
     </script>
 </body>
 </html>

@@ -19,7 +19,7 @@
         .settings-container { position: relative; cursor: pointer; }
         .settings-icon { font-size: 18px; background-color: #f57c00; color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.25); transition: 0.3s; border: 1px solid #ffb74d; }
         .settings-icon:hover { background-color: #e65100; transform: scale(1.05); }
-        .settings-dropdown { position: fixed; right: 60px; top: 75px; width: 200px; background: white; color: #333; box-shadow: 0 8px 24px rgba(0,0,0,0.3); border-radius: 8px; display: none; z-index: 9999; border: 1px solid #ffcc80; overflow: hidden; }
+        .settings-dropdown { position: fixed; right: 60px; top: 75px; width: 210px; background: white; color: #333; box-shadow: 0 8px 24px rgba(0,0,0,0.3); border-radius: 8px; display: none; z-index: 9999; border: 1px solid #ffcc80; overflow: hidden; }
         .settings-item { padding: 12px 15px; cursor: pointer; font-size: 14px; border-bottom: 1px solid #f0f0f0; transition: 0.2s; font-weight: 500; }
         .settings-item:hover { background-color: #fff3e0; }
 
@@ -106,7 +106,7 @@
 <body>
 
     <header>
-        <h1>🎓 Principal Control Panel<br><span style="font-size: 16px; font-weight: normal;">Vidya Vihar Public School</span></h1>
+        <h1>🎓 Principal Control Panel<br><span style="font-size: 16px; font-weight: normal;">Vidya Vihar School</span></h1>
         <div class="header-right">
             
             <!-- Settings Icon for Admin Options -->
@@ -115,6 +115,7 @@
                 <div class="settings-dropdown" id="settingsDropdown" onclick="event.stopPropagation()">
                     <div class="settings-item" id="openSliderBtn">📢 Make Announcement</div>
                     <div class="settings-item" id="openGalleryBtn">🖼️ Add to Gallery</div>
+                    <div class="settings-item" id="openPrincipalPhotoBtn">👤 Add Principal Photo</div>
                 </div>
             </div>
 
@@ -148,7 +149,7 @@
         <div id="studentsSection" class="tab-content active">
             <div class="welcome-card">
                 <h2>Welcome, Respected Principal Sir!</h2>
-                <p>From this panel, you can register new students, view student profiles, and manage records class-wise securely using Firebase Database.</p>
+                <p>From this panel, you can register new students, view student profiles, and manage records class-wise securely.</p>
             </div>
 
             <div class="section-box">
@@ -350,12 +351,29 @@
         </div>
     </div>
 
+    <!-- Principal Photo Slider Panel -->
+    <div id="principalPhotoSlider" class="slider-panel" style="border-left: 2px solid #1B5E20;">
+        <div class="slider-header" style="background-color: #1B5E20;">
+            <span>👤 Update Principal Photo</span>
+            <span id="closePrincipalPhotoBtn" style="cursor: pointer; font-size: 18px;">❌</span>
+        </div>
+        <div class="slider-body">
+            <p style="font-size: 13px; color: #555; margin-bottom: 10px;">Select a clear photo of the Principal to display on the About Us page.</p>
+            <input type="file" id="principalImageFile" accept="image/*">
+            <button onclick="uploadPrincipalPhoto()" style="background-color: #1B5E20;" id="uploadPrincipalBtn">Update Principal Photo</button>
+            <div id="currentPrincipalPhotoPreview" style="margin-top: 20px; text-align: center;">
+                <h4 style="color: #1B5E20; margin-bottom: 10px;">Current Photo Preview</h4>
+                <img id="previewPrincipalImg" src="principal.jpg" alt="Principal" style="width: 120px; height: 150px; object-fit: cover; border-radius: 8px; border: 2px solid #1B5E20;" onerror="this.src='https://via.placeholder.com/120x150?text=Principal'">
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK & Database Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
-        // IMGBB API Key jo tune di hai
+        // IMGBB API Key
         const IMGBB_API_KEY = "fec7252fd0de2cfa6ed6359f6433e95d";
 
         const firebaseConfig = {
@@ -602,6 +620,11 @@
         const gallerySlider = document.getElementById("gallerySlider");
         const closeGalleryBtn = document.getElementById("closeGalleryBtn");
 
+        // Principal Photo Elements
+        const openPrincipalPhotoBtn = document.getElementById("openPrincipalPhotoBtn");
+        const principalPhotoSlider = document.getElementById("principalPhotoSlider");
+        const closePrincipalPhotoBtn = document.getElementById("closePrincipalPhotoBtn");
+
         // Toggle Settings Dropdown
         settingsContainer.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -640,6 +663,16 @@
         });
         closeGalleryBtn.addEventListener("click", () => {
             gallerySlider.classList.remove("open");
+        });
+
+        // Open/Close Principal Photo Slider
+        openPrincipalPhotoBtn.addEventListener("click", () => {
+            settingsDropdown.style.display = "none";
+            principalPhotoSlider.classList.add("open");
+            loadCurrentPrincipalPhoto();
+        });
+        closePrincipalPhotoBtn.addEventListener("click", () => {
+            principalPhotoSlider.classList.remove("open");
         });
 
         // --- ANNOUNCEMENT LOGIC ---
@@ -719,7 +752,6 @@
                 const formData = new FormData();
                 formData.append("image", file);
                 
-                // ImgBB API par photo bhejna
                 const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
                     method: "POST",
                     body: formData
@@ -728,7 +760,6 @@
                 const result = await response.json();
                 
                 if(result.success) {
-                    // Jo link ImgBB se mila, usko apne Firestore me save karna
                     await addDoc(collection(db, "gallery"), {
                         imageUrl: result.data.url,
                         timestamp: new Date()
@@ -780,12 +811,70 @@
         window.deletePhoto = async function(docId) {
             if(confirm("Are you sure you want to remove this photo from the website?")) {
                 try {
-                    // Firebase Firestore se photo ka link delete karna
                     await deleteDoc(doc(db, "gallery", docId));
                     loadAdminGallery();
                 } catch(error) { 
                     alert("Error: " + error.message); 
                 }
+            }
+        };
+
+        // --- PRINCIPAL PHOTO UPLOAD LOGIC ---
+        window.uploadPrincipalPhoto = async function() {
+            const fileInput = document.getElementById("principalImageFile");
+            const btn = document.getElementById("uploadPrincipalBtn");
+            const file = fileInput.files[0];
+            
+            if(!file) {
+                alert("Please select a photo first!");
+                return;
+            }
+            
+            btn.innerText = "Uploading... Please wait";
+            btn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append("image", file);
+                
+                const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                    method: "POST",
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if(result.success) {
+                    const imageUrl = result.data.url;
+                    // Save in Firestore document 'settings/principal'
+                    await setDoc(doc(db, "settings", "principal"), {
+                        imageUrl: imageUrl,
+                        updatedAt: new Date()
+                    });
+                    
+                    alert("Principal photo updated successfully!");
+                    fileInput.value = "";
+                    document.getElementById("previewPrincipalImg").src = imageUrl;
+                } else {
+                    alert("Upload Error: " + result.error.message);
+                }
+            } catch(error) {
+                alert("Error: " + error.message);
+            }
+            
+            btn.innerText = "Update Principal Photo";
+            btn.disabled = false;
+        };
+
+        window.loadCurrentPrincipalPhoto = async function() {
+            try {
+                const docRef = doc(db, "settings", "principal");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists() && docSnap.data().imageUrl) {
+                    document.getElementById("previewPrincipalImg").src = docSnap.data().imageUrl;
+                }
+            } catch (error) {
+                console.error("Error loading principal photo:", error);
             }
         };
 

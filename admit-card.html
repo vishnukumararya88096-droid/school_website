@@ -200,7 +200,7 @@
                     document.getElementById("valCenter").innerText = admit.examCenter || 'N/A';
                     
                     let statusEl = document.getElementById("valStatus");
-                    let statusVal = admit.status || 'Released';
+                    let statusVal = admit.status || 'N/A';
                     statusEl.innerText = statusVal;
                     if (statusVal === "Withheld") {
                         statusEl.style.color = "#c62828";
