@@ -3,174 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Vidya Vihar Public School</title>
+    <title>About Us - Vidya Vihar School</title>
+    
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background-color: #f9f9f9; 
-        }
-        header { 
-            background-color: #1B5E20; 
-            color: white; 
-            text-align: center; 
-            padding: 30px 20px; 
-        }
-        header h1 { 
-            margin: 0; 
-            font-size: 36px; 
-        }
-        header p { 
-            color: #ffffff; 
-            font-size: 18px; 
-            margin-top: 5px; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Original Green Navbar Panel */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ================= HEADER ================= */
+        header {
+            background-color: #1B5E20;
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-logo {
+            position: absolute;
+            left: 30px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: contain;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            background-color: #ffffff;
+        }
+
+        .header-text {
+            text-align: center;
+        }
+
+        .header-text h1 {
+            font-size: clamp(24px, 3vw, 34px);
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .header-text p {
+            color: #e8f5e9;
+            font-size: 17px;
+            margin-top: 5px;
+        }
+
+        /* ================= NAVIGATION BAR ================= */
         nav {
             background-color: #2E7D32;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
         }
+
         .nav-links {
             list-style: none;
             display: flex;
+            align-items: center;
+            gap: 30px;
             margin: 0;
             padding: 0;
-            align-items: center;
         }
-        .nav-links li {
-            margin: 0 15px;
-        }
+
         .nav-links li a {
             color: white;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: bold;
-        }
-        .nav-links li a:hover {
-            text-decoration: underline;
+            transition: 0.3s;
         }
 
-        /* Hamburger Icon */
+        .nav-links li a:hover {
+            color: #c8e6c9;
+        }
+
+        /* ================= HAMBURGER MENU ================= */
         .menu-toggle {
             display: none;
             cursor: pointer;
+            border: none;
+            background: transparent;
         }
+
         .menu-toggle .bar {
             display: block;
             width: 28px;
             height: 3px;
-            margin: 5px auto;
+            margin: 5px 0;
             background-color: white;
-            transition: all 0.3s ease-in-out;
-            border-radius: 2px;
+            border-radius: 3px;
         }
 
-        /* Close Button inside Mobile Menu */
         .menu-close-btn {
             display: none;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 28px;
-            cursor: pointer;
         }
 
-        /* Mobile Screen ke liye (Slide-out Menu) */
-        @media screen and (max-width: 900px) {
-            nav {
-                justify-content: flex-start;
-            }
-            .menu-toggle {
-                display: block;
-                z-index: 1001;
-            }
-            .menu-close-btn {
-                display: block;
-            }
-            .nav-links {
-                position: fixed;
-                right: -100%;
-                top: 0;
-                flex-direction: column;
-                background-color: #1B5E20;
-                width: 250px;
-                height: 100vh;
-                padding-top: 70px;
-                transition: right 0.4s ease-in-out;
-                box-shadow: -5px 0 15px rgba(0,0,0,0.3);
-                z-index: 1000;
-                align-items: center;
-            }
-            .nav-links li {
-                margin: 20px 0;
-                text-align: center;
-            }
-            .nav-links li a {
-                font-size: 18px;
-            }
-            .nav-links.active {
-                right: 0;
-            }
+        .menu-overlay {
+            display: none;
         }
 
-        .container { 
-            max-width: 900px; 
-            margin: 30px auto; 
-            background: #ffffff; 
-            padding: 40px; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
-            border-radius: 8px; 
-            border-left: 6px solid #1B5E20; 
+        /* ================= ABOUT CONTENT ================= */
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 35px auto;
+            padding: 40px;
+            background-color: white;
+            border-radius: 12px;
+            border-left: 6px solid #1B5E20;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            flex: 1;
         }
-        h2 { 
-            color: #1B5E20; 
-            font-size: 28px; 
-            margin-top: 0; 
+
+        .container h2 {
+            color: #1B5E20;
+            font-size: 32px;
+            margin-bottom: 28px;
         }
-        p { 
-            font-size: 18px; 
-            line-height: 1.6; 
-            color: #333; 
+
+        .container p {
+            color: #333;
+            font-size: 19px;
+            line-height: 1.8;
+            margin-bottom: 22px;
         }
-        /* Footer text color explicitly set to white */
+
+        /* ================= FOOTER ================= */
         footer {
             background-color: #1B5E20;
             color: white;
             text-align: center;
-            padding: 15px;
-            margin-top: 40px;
+            padding: 20px 15px;
+            margin-top: auto;
         }
+
         footer p {
             color: white;
+            font-size: 16px;
+            line-height: 1.6;
             margin: 5px 0;
+        }
+
+        /* ================= MOBILE RESPONSIVE ================= */
+        @media screen and (max-width: 600px) {
+            header {
+                min-height: 94px;
+                padding: 12px 14px;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .header-logo {
+                position: static;
+                width: 62px;
+                height: 62px;
+                flex-shrink: 0;
+                margin-right: 2px;
+            }
+
+            .header-text {
+                text-align: left;
+            }
+
+            .header-text h1 {
+                font-size: clamp(15px, 4vw, 19px);
+                letter-spacing: 0.5px;
+            }
+
+            .header-text p {
+                font-size: 11px;
+                margin-top: 4px;
+            }
+
+            nav {
+                min-height: 52px;
+                justify-content: flex-start;
+                padding: 10px 18px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: min(280px, 82vw);
+                height: 100vh;
+                background-color: #1B5E20;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 85px;
+                gap: 0;
+                transform: translateX(-110%);
+                transition: transform 0.3s ease;
+                z-index: 1001;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .nav-links li {
+                margin: 18px 0;
+            }
+
+            .nav-links li a {
+                font-size: 17px;
+            }
+
+            .menu-close-btn {
+                display: block;
+                position: absolute;
+                top: 15px;
+                right: 20px;
+                background: transparent;
+                border: none;
+                color: white;
+                font-size: 32px;
+                cursor: pointer;
+            }
+
+            .menu-overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.45);
+                opacity: 0;
+                visibility: hidden;
+                transition: 0.3s;
+                z-index: 1000;
+            }
+
+            .menu-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .container {
+                margin: 22px auto;
+                padding: 22px 18px;
+                border-left: 5px solid #1B5E20;
+                border-radius: 10px;
+                width: 92%;
+            }
+
+            .container h2 {
+                font-size: 23px;
+                margin-bottom: 20px;
+            }
+
+            .container p {
+                font-size: 15px;
+                line-height: 1.7;
+                margin-bottom: 18px;
+            }
+
+            footer {
+                padding: 18px 12px;
+                margin-top: auto;
+            }
+
+            footer p {
+                font-size: 13px;
+                overflow-wrap: break-word;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- HEADER -->
     <header>
-        <h1>VIDYA VIHAR PUBLIC SCHOOL</h1>
-        <p>Education for a Better Tomorrow</p>
+        <img src="school-logo.png" alt="Vidya Vihar School Logo" class="header-logo">
+        <div class="header-text">
+            <h1>VIDYA VIHAR SCHOOL</h1>
+            <p>Education for a Better Tomorrow</p>
+        </div>
     </header>
 
-    <!-- Navigation Menu with Hamburger & Close Button -->
+    <!-- NAVIGATION BAR -->
     <nav>
-        <div class="menu-toggle" id="mobile-menu">
+        <button class="menu-toggle" id="mobile-menu" aria-label="Open navigation menu">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
-        </div>
+        </button>
+
         <ul class="nav-links" id="nav-links">
-            <button class="menu-close-btn" id="menu-close">&times;</button>
+            <button class="menu-close-btn" id="menu-close" aria-label="Close navigation menu">&times;</button>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About Us</a></li>
             <li><a href="admission.html">Admissions</a></li>
@@ -180,30 +320,54 @@
         </ul>
     </nav>
 
+    <div class="menu-overlay" id="menu-overlay"></div>
+
+    <!-- ABOUT SCHOOL CONTENT -->
     <div class="container">
         <h2>📖 About Our School</h2>
-        <p><strong>Vidya Vihar Public School</strong> is dedicated to excellence in education. We aim to inspire and empower our students to achieve their highest potential in a supportive and challenging environment.</p>
-        <p>Our campus is equipped with modern facilities, experienced faculty, and a safe learning atmosphere focused on overall student development, discipline, and moral values.</p>
+        <p>
+            <strong>Vidya Vihar School</strong> is dedicated to
+            excellence in education. We aim to inspire and empower
+            our students to achieve their highest potential in a
+            supportive and challenging environment.
+        </p>
+        <p>
+            Our campus is equipped with modern facilities,
+            experienced faculty, and a safe learning atmosphere
+            focused on overall student development, discipline,
+            and moral values.
+        </p>
     </div>
 
-    <!-- Footer with White Text -->
+    <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 VIDYA VIHAR PUBLIC SCHOOL. All Rights Reserved.</p>
-        <p>Email: contact@vidyavihar.com | Phone: +91-9876543210</p>
+        <p>&copy; 2026 VIDYA VIHAR SCHOOL. All Rights Reserved.</p>
+        <p>Email: vidyavihar06@gmail.com | Phone: +91-8002705409</p>
+        <p>UDISE code: 20041003611 | JAC code: 210960</p>
     </footer>
 
-    <!-- JavaScript for Hamburger Menu Toggle & Close -->
+    <!-- JAVASCRIPT -->
     <script>
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuClose = document.getElementById('menu-close');
-        const navLinks = document.getElementById('nav-links');
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuClose = document.getElementById("menu-close");
+        const navLinks = document.getElementById("nav-links");
+        const overlay = document.getElementById("menu-overlay");
 
-        mobileMenu.addEventListener('click', () => {
-            navLinks.classList.add('active');
+        mobileMenu.addEventListener("click", function() {
+            navLinks.classList.add("active");
+            overlay.classList.add("active");
         });
 
-        menuClose.addEventListener('click', () => {
-            navLinks.classList.remove('active');
+        menuClose.addEventListener("click", closeMenu);
+        overlay.addEventListener("click", closeMenu);
+
+        function closeMenu() {
+            navLinks.classList.remove("active");
+            overlay.classList.remove("active");
+        }
+
+        document.querySelectorAll(".nav-links a").forEach(link => {
+            link.addEventListener("click", closeMenu);
         });
     </script>
 </body>

@@ -34,7 +34,7 @@
         .logout-btn:hover { background-color: #c62828; transform: translateY(-1px); }
         
         .container { 
-            max-width: 900px; 
+            max-width: 1000px; 
             margin: 35px auto; 
             background: white; 
             padding: 35px; 
@@ -52,16 +52,39 @@
             margin-top: 0;
         }
         
-        .profile-row { 
-            display: flex; 
-            flex-wrap: wrap; 
-            margin-bottom: 16px; 
-            border-bottom: 1px solid #f8f9fa; 
-            padding-bottom: 12px; 
-            align-items: center;
+        /* 2-Column Grid Layout */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px 20px;
+            margin-top: 20px;
+            margin-bottom: 30px;
         }
-        .profile-label { flex: 1; min-width: 140px; font-weight: 600; color: #4a5568; font-size: 15px; }
-        .profile-value { flex: 2; min-width: 160px; color: #2d3748; font-size: 15px; font-weight: 500; word-break: break-word; }
+        
+        .profile-item {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #edf2f7;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .profile-label { 
+            font-weight: 600; 
+            color: #4a5568; 
+            font-size: 12px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .profile-value { 
+            color: #2d3748; 
+            font-size: 14px; 
+            font-weight: 500; 
+            word-break: break-word; 
+        }
         
         /* Aesthetic & Colorful Portal Navigation Grid */
         .portal-nav-grid {
@@ -106,7 +129,7 @@
         .card-admit { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
 
         /* Mobile Responsive Adjustments */
-        @media screen and (max-width: 600px) {
+        @media screen and (max-width: 768px) {
             header {
                 padding: 15px;
                 flex-direction: column;
@@ -117,9 +140,9 @@
                 margin: 15px;
                 padding: 20px;
             }
-            .profile-row {
-                flex-direction: column;
-                gap: 4px;
+            .profile-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
             .portal-nav-grid {
                 grid-template-columns: 1fr;
@@ -137,12 +160,29 @@
     <div class="container">
         <h2>👤 My Personal Details</h2>
         
-        <div class="profile-row"><div class="profile-label">Student Name:</div><div class="profile-value" id="display-studentName">Loading...</div></div>
-        <div class="profile-row"><div class="profile-label">Admission No. / ID:</div><div class="profile-value" id="display-admissionNo">Loading...</div></div>
-        <div class="profile-row"><div class="profile-label">Class:</div><div class="profile-value" id="display-className">Loading...</div></div>
-        <div class="profile-row"><div class="profile-label">Father's Name:</div><div class="profile-value" id="display-fatherName">Loading...</div></div>
-        <div class="profile-row"><div class="profile-label">Mother's Name:</div><div class="profile-value" id="display-motherName">Loading...</div></div>
-        <div class="profile-row"><div class="profile-label">Contact Number:</div><div class="profile-value" id="display-contactNo">Loading...</div></div>
+        <div class="profile-grid">
+            <div class="profile-item"><div class="profile-label">Student Name</div><div class="profile-value" id="display-studentName">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Admission No. / ID</div><div class="profile-value" id="display-admissionNo">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Class</div><div class="profile-value" id="display-className">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Section</div><div class="profile-value" id="display-section">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Roll No.</div><div class="profile-value" id="display-rollNo">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Gender</div><div class="profile-value" id="display-gender">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Date of Birth</div><div class="profile-value" id="display-dob">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Father's Name</div><div class="profile-value" id="display-fatherName">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Mother's Name</div><div class="profile-value" id="display-motherName">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Guardian Name</div><div class="profile-value" id="display-guardianName">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Aadhaar No.</div><div class="profile-value" id="display-aadharNo">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Name as per Aadhaar</div><div class="profile-value" id="display-aadharName">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Mobile No.</div><div class="profile-value" id="display-contactNo">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Whether CWSN</div><div class="profile-value" id="display-cwsn">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Alternative Mobile No.</div><div class="profile-value" id="display-altMobileNo">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Date of Admission</div><div class="profile-value" id="display-admissionDate">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Category</div><div class="profile-value" id="display-category">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Height (cm)</div><div class="profile-value" id="display-height">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Weight (kg)</div><div class="profile-value" id="display-weight">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">PEN (Permanent Edu No.)</div><div class="profile-value" id="display-pen">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Blood Group</div><div class="profile-value" id="display-bloodGroup">Loading...</div></div>
+        </div>
 
         <!-- Student Portal Options / Navigation Grid -->
         <div style="margin-top: 35px;">
@@ -175,7 +215,11 @@
         let studentId = urlParams.get('id');
 
         let studentDataGlobal = {};
-        const fields = ['studentName', 'admissionNo', 'className', 'fatherName', 'motherName', 'contactNo'];
+        const fields = [
+            'studentName', 'admissionNo', 'className', 'section', 'rollNo', 'gender', 'dob', 'fatherName', 
+            'motherName', 'guardianName', 'aadharNo', 'aadharName', 'contactNo', 
+            'cwsn', 'altMobileNo', 'admissionDate', 'category', 'height', 'weight', 'pen', 'bloodGroup'
+        ];
 
         async function fetchStudentProfile() {
             if (!studentId) {
@@ -199,7 +243,13 @@
                     studentDataGlobal = docSnap.data();
                     fields.forEach(field => {
                         const container = document.getElementById(`display-${field}`);
-                        container.innerText = studentDataGlobal[field] || 'N/A';
+                        if (container) {
+                            let val = studentDataGlobal[field] || '';
+                            if (field === 'aadharNo' && val) {
+                                val = '[Aadhaar Redacted]';
+                            }
+                            container.innerText = val || 'N/A';
+                        }
                     });
                 } else {
                     document.getElementById("display-studentName").innerText = "Student record not found.";

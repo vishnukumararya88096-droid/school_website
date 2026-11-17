@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marksheet Portal - Vidya Vihar Public School</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; }
+        
+        header { 
+            background: linear-gradient(135deg, #1e3c72, #2a5298); 
+            color: white; 
+            padding: 15px 25px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        header h1 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: 0.5px; }
+        
+        .back-btn { 
+            background-color: #ffffff; 
+            color: #1e3c72; 
+            padding: 6px 14px; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            font-size: 13px; 
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .back-btn:hover { background-color: #e3f2fd; transform: translateY(-1px); }
+        
+        .container { 
+            max-width: 850px; 
+            margin: 25px auto; 
+            background: white; 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); 
+            border-top: 6px solid;
+            border-image: linear-gradient(135deg, #f7971e, #ffd200) 1;
+        }
+        
+        h2 { color: #1e3c72; margin: 0 0 15px 0; font-size: 18px; border-bottom: 2px solid #edf2f7; padding-bottom: 12px; }
+        
+        .student-info { background: #fff8e1; padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; font-weight: 600; color: #b78103; font-size: 13px; }
+
+        /* Summary Cards Grid */
+        .marks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .marks-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .marks-card h4 {
+            margin: 0 0 8px 0;
+            color: #4a5568;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .marks-card .value {
+            margin: 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        /* Marksheet Image Container */
+        .image-container {
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .image-container h3 {
+            margin-top: 0;
+            color: #1e3c72;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #cbd5e0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .no-image {
+            color: #718096;
+            font-style: italic;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        @media screen and (max-width: 600px) {
+            header { padding: 12px 15px; flex-direction: column; align-items: flex-start; }
+            header h1 { font-size: 16px; }
+            .container { margin: 10px; padding: 15px; width: auto; }
+            .marks-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📊 Student Marksheet Portal</h1>
+        <a href="#" id="backDashboard" class="back-btn">← Back to Dashboard</a>
+    </header>
+
+    <div class="container">
+        <h2 id="examTitleHeader">Examination Result</h2>
+        <div class="student-info" id="studentDetailsBox">Loading student info...</div>
+
+        <!-- Marks Summary Grid -->
+        <div class="marks-grid">
+            <div class="marks-card">
+                <h4>Total Marks</h4>
+                <p class="value" id="valTotalMarks">--</p>
+            </div>
+            <div class="marks-card">
+                <h4>Obtained Marks</h4>
+                <p class="value" style="color: #2e7d32;" id="valObtainedMarks">--</p>
+            </div>
+            <div class="marks-card">
+                <h4>Grade / Status</h4>
+                <p class="value" style="color: #d97706;" id="valGrade">--</p>
+            </div>
+        </div>
+
+        <!-- Marksheet Image Preview Section -->
+        <div class="image-container">
+            <h3>📄 Official Marksheet Document</h3>
+            <div id="imageWrapper">
+                <p class="no-image">No marksheet image uploaded yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3XBCZ2ZTwfqT2y3EXrkW0LPEz4fj9tBc",
+            authDomain: "vidya-vihar-public-schoo-f3b61.firebaseapp.com",
+            projectId: "vidya-vihar-public-schoo-f3b61",
+            storageBucket: "vidya-vihar-public-schoo-f3b61.firebasestorage.app",
+            messagingSenderId: "872134534556",
+            appId: "1:872134534556:web:7fb8ea167c2947b5c05459"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let studentId = urlParams.get('id');
+
+        if (studentId) {
+            document.getElementById("backDashboard").href = `student-dashboard.html?id=${studentId}`;
+        }
+
+        async function fetchMarksheetData() {
+            if (!studentId) {
+                document.getElementById("studentDetailsBox").innerText = "No student session found.";
+                return;
+            }
+
+            try {
+                const docRef = doc(db, "students", studentId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    let data = docSnap.data();
+                    
+                    document.getElementById("studentDetailsBox").innerText = `Student: ${data.studentName || 'N/A'} | Admission No: ${data.admissionNo || 'N/A'} | Class: ${data.className || 'N/A'}`;
+                    
+                    let marks = data.marksheet || {};
+                    
+                    if (marks.exam) {
+                        document.getElementById("examTitleHeader").innerText = marks.exam;
+                    }
+                    
+                    document.getElementById("valTotalMarks").innerText = marks.totalMarks || 'N/A';
+                    document.getElementById("valObtainedMarks").innerText = marks.obtained || 'N/A';
+                    document.getElementById("valGrade").innerText = marks.grade || 'N/A';
+
+                    if (marks.image) {
+                        const wrapper = document.getElementById("imageWrapper");
+                        wrapper.innerHTML = `<img src="${marks.image}" alt="Uploaded Marksheet" />`;
+                    }
+                } else {
+                    document.getElementById("studentDetailsBox").innerText = "Student record not found.";
+                }
+            } catch (error) {
+                console.error("Error fetching marksheet: ", error);
+                document.getElementById("studentDetailsBox").innerText = "Failed to load marksheet details.";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchMarksheetData);
+    </script>
+
+</body>
+</html>

@@ -3,125 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Profile - Vidya Vihar Public School</title>
+    <title>Student Profile & Admin Management - Vidya Vihar Public School</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f4f6f8; }
-        header { background-color: #1B5E20; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
-        header h1 { margin: 0; font-size: 24px; }
-        .back-btn { background-color: white; color: #1B5E20; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px; }
-        .back-btn:hover { background-color: #e8f5e9; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; }
         
-        .container { max-width: 900px; margin: 40px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 6px solid #1B5E20; }
-        h2, h3 { color: #1B5E20; border-bottom: 2px solid #e0e0e0; padding-bottom: 15px; }
+        header { 
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
+            color: white; 
+            padding: 22px 35px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        header h1 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.5px; }
         
-        .profile-row { display: flex; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px; }
-        .profile-label { flex: 1; font-weight: bold; color: #555; font-size: 16px; }
-        .profile-value { flex: 2; color: #333; font-size: 16px; }
-        .profile-value input, .profile-value select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; box-sizing: border-box; }
+        .back-btn { 
+            background-color: #ffffff; 
+            color: #0f2027; 
+            padding: 8px 18px; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            font-size: 14px; 
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .back-btn:hover { background-color: #e2e8f0; transform: translateY(-1px); }
         
-        .attendance-box { margin-top: 30px; background: #f9f9f9; padding: 20px; border-radius: 6px; border: 1px solid #ddd; }
+        .container { 
+            max-width: 1000px; 
+            margin: 35px auto; 
+            background: white; 
+            padding: 35px; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); 
+            border-top: 6px solid;
+            border-image: linear-gradient(135deg, #11998e, #38ef7d) 1;
+        }
         
-        .inline-selector { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: nowrap; }
-        .inline-selector label { font-weight: bold; color: #555; font-size: 14px; white-space: nowrap; }
-        .inline-selector select { padding: 8px 12px; font-size: 15px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold; color: #1B5E20; width: auto; display: inline-block; }
+        h2 { 
+            color: #0f2027; 
+            border-bottom: 2px solid #edf2f7; 
+            padding-bottom: 12px; 
+            font-size: 20px; 
+            margin-top: 0; 
+        }
+        
+        /* 2-Column Grid Layout for Profile Details */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px 20px;
+            margin-top: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .profile-item {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #edf2f7;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .profile-label { 
+            font-weight: 600; 
+            color: #4a5568; 
+            font-size: 12px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .profile-value { 
+            color: #2d3748; 
+            font-size: 14px; 
+            font-weight: 500; 
+            word-break: break-word; 
+        }
+        
+        .profile-value input, .profile-value select { 
+            width: 100%; 
+            padding: 6px 10px; 
+            border: 1px solid #cbd5e0; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            box-sizing: border-box; 
+            background: #fff;
+        }
+        
+        /* Modern Accordion Box Styling */
+        .accordion-box { border: 1px solid #e2e8f0; border-radius: 10px; margin-top: 20px; overflow: hidden; background: #fafafa; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .accordion-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 600; color: #1e3c72; background: #fff; font-size: 15px; transition: background 0.2s; }
+        .accordion-header:hover { background: #f8fafc; }
+        .accordion-body { padding: 20px; background: #fafafa; border-top: 1px solid #e2e8f0; display: none; }
+        .accordion-body.active { display: block; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; }
-        th, td { padding: 10px; text-align: center; border: 1px solid #ddd; font-size: 14px; }
-        th { background-color: #1B5E20; color: white; }
-        
-        .attendance-select { padding: 6px 10px; font-size: 14px; font-weight: bold; border-radius: 4px; border: 1px solid #ccc; cursor: pointer; }
-        
-        .btn-group { margin-top: 25px; display: flex; gap: 10px; flex-wrap: wrap; }
-        
-        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; transition: transform 0.1s ease, background-color 0.2s ease; }
-        .btn:active { transform: scale(0.96); }
-        
-        .btn-edit { background-color: #0288d1; color: white; }
-        .btn-edit:hover { background-color: #01579b; }
-        
-        .btn-save { background-color: #1B5E20; color: white; }
-        .btn-save:hover { background-color: #2E7D32; }
+        .inline-selector { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .inline-selector label { font-weight: 600; color: #4a5568; font-size: 13px; white-space: nowrap; }
+        .inline-selector select { padding: 6px 10px; font-size: 13px; border-radius: 6px; border: 1px solid #cbd5e0; font-weight: 600; color: #1e3c72; background-color: white; }
 
-        .scrollable-table { max-height: 400px; overflow-y: auto; }
-        #attendanceMsg { margin-top: 15px; font-weight: bold; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 6px; overflow: hidden; border: 1px solid #e2e8f0; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+        th { background-color: #f1f5f9; color: #1e3c72; font-weight: 600; }
+        td:last-child, th:last-child { text-align: center; width: 160px; }
+        
+        .table-select, .admin-input { width: 100%; padding: 6px 10px; font-size: 13px; border-radius: 6px; border: 1px solid #cbd5e0; box-sizing: border-box; background-color: #fff; }
+        
+        .btn-group { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 8px 18px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; transition: all 0.2s ease; text-decoration: none; display: inline-block; text-align: center; }
+        .btn:active { transform: scale(0.97); }
+        .btn-edit { background-color: #e2e8f0; color: #2d3748; }
+        .btn-edit:hover { background-color: #cbd5e0; }
+        .btn-save { background-color: #10b981; color: white; box-shadow: 0 2px 5px rgba(16,185,129,0.3); }
+        .btn-save:hover { background-color: #059669; }
+        .btn-danger { background-color: #ef4444; color: white; box-shadow: 0 2px 5px rgba(239,68,68,0.3); }
+        .btn-danger:hover { background-color: #dc2626; }
+        .btn-fee { background-color: #0284c7; color: white; box-shadow: 0 2px 5px rgba(2,132,199,0.3); }
+        .btn-fee:hover { background-color: #0369a1; }
+
+        .scrollable-table { max-height: 280px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 6px; }
+        .msg { margin-top: 10px; font-weight: bold; text-align: right; font-size: 13px; min-height: 18px; color: #10b981; }
+
+        @media screen and (max-width: 768px) {
+            header { padding: 15px; flex-direction: column; align-items: flex-start; }
+            header h1 { font-size: 18px; }
+            .container { margin: 15px; padding: 20px; }
+            .profile-grid { grid-template-columns: 1fr; gap: 10px; }
+            .btn { flex: 1; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🎓 Student Profile Management</h1>
-        <a href="admin.html" class="back-btn">← Back to Dashboard</a>
+        <h1>🎓 Student Profile & Admin Management</h1>
+        <a href="admin.html" class="back-btn">← Back</a>
     </header>
 
     <div class="container">
         <h2>👤 Complete Student Details</h2>
         
-        <div class="profile-row"><div class="profile-label">Student Name:</div><div class="profile-value" id="display-studentName">Loading...</div></div>
-        <div class="profile-row"><div class="profile-label">Admission No. / ID:</div><div class="profile-value" id="display-admissionNo">Loading...</div></div>
-        <div class="profile-row"><div class="profile-label">Class:</div><div class="profile-value" id="display-className">Loading...</div></div>
-        <div class="profile-row"><div class="profile-label">Father's Name:</div><div class="profile-value" id="display-fatherName">Loading...</div></div>
-        <div class="profile-row"><div class="profile-label">Mother's Name:</div><div class="profile-value" id="display-motherName">Loading...</div></div>
-        <div class="profile-row"><div class="profile-label">Contact Number:</div><div class="profile-value" id="display-contactNo">Loading...</div></div>
+        <div class="profile-grid">
+            <div class="profile-item"><div class="profile-label">Student Name</div><div class="profile-value" id="display-studentName">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Gender</div><div class="profile-value" id="display-gender">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Date of Birth</div><div class="profile-value" id="display-dob">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Father's Name</div><div class="profile-value" id="display-fatherName">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Class</div><div class="profile-value" id="display-className">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Section</div><div class="profile-value" id="display-section">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Roll No.</div><div class="profile-value" id="display-rollNo">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Admission No. / ID</div><div class="profile-value" id="display-admissionNo">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Mother's Name</div><div class="profile-value" id="display-motherName">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Guardian Name</div><div class="profile-value" id="display-guardianName">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Aadhaar No.</div><div class="profile-value" id="display-aadharNo">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Name as per Aadhaar</div><div class="profile-value" id="display-aadharName">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Mobile No.</div><div class="profile-value" id="display-contactNo">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Whether CWSN</div><div class="profile-value" id="display-cwsn">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Alternative Mobile No.</div><div class="profile-value" id="display-altMobileNo">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Date of Admission</div><div class="profile-value" id="display-admissionDate">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Category</div><div class="profile-value" id="display-category">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Height (cm)</div><div class="profile-value" id="display-height">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Weight (kg)</div><div class="profile-value" id="display-weight">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">PEN (Permanent Edu No.)</div><div class="profile-value" id="display-pen">Loading...</div></div>
+            <div class="profile-item"><div class="profile-label">Blood Group</div><div class="profile-value" id="display-bloodGroup">Loading...</div></div>
+        </div>
 
         <div class="btn-group">
             <button class="btn btn-edit" id="editDetailsBtn" onclick="toggleEditDetails()">Edit Details</button>
             <button class="btn btn-save" id="saveDetailsBtn" style="display:none;" onclick="saveDetails()">Save Changes</button>
+            <a href="#" id="feeRegisterBtn" class="btn btn-fee">💰 Open Fee Register (12 Months)</a>
         </div>
 
-        <!-- Attendance View & Direct Edit Section -->
-        <div class="attendance-box">
-            <h3>📅 Month-wise Attendance Register</h3>
-            
-            <div class="inline-selector">
-                <label>Month & Year:</label>
-                <select id="viewMonth" onchange="loadAttendanceTable()">
-                    <option value="0" selected>January</option>
-                    <option value="1">February</option>
-                    <option value="2">March</option>
-                    <option value="3">April</option>
-                    <option value="4">May</option>
-                    <option value="5">June</option>
-                    <option value="6">July</option>
-                    <option value="7">August</option>
-                    <option value="8">September</option>
-                    <option value="9">October</option>
-                    <option value="10">November</option>
-                    <option value="11">December</option>
-                </select>
-
-                <select id="viewYear" onchange="loadAttendanceTable()">
-                    <option value="2025">2025</option>
-                    <option value="2026" selected>2026</option>
-                    <option value="2027">2027</option>
-                </select>
+        <!-- 1. Attendance Register Section (Collapsible) -->
+        <div class="accordion-box">
+            <div class="accordion-header" onclick="toggleAccordion('attendanceBody')">
+                <span>📅 Month-wise Attendance Register</span>
+                <span>▼</span>
             </div>
-
-            <div class="scrollable-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Status (Select Present / Absent)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="attendanceTableBody">
-                        <!-- Dynamic Days loaded here -->
-                    </tbody>
-                </table>
+            <div class="accordion-body" id="attendanceBody">
+                <div class="inline-selector">
+                    <label>Month & Year:</label>
+                    <select id="viewMonth" onchange="loadAttendanceTable()">
+                        <option value="0" selected>January</option>
+                        <option value="1">February</option>
+                        <option value="2">March</option>
+                        <option value="3">April</option>
+                        <option value="4">May</option>
+                        <option value="5">June</option>
+                        <option value="6">July</option>
+                        <option value="7">August</option>
+                        <option value="8">September</option>
+                        <option value="9">October</option>
+                        <option value="10">November</option>
+                        <option value="11">December</option>
+                    </select>
+                    <select id="viewYear" onchange="loadAttendanceTable()">
+                        <option value="2025">2025</option>
+                        <option value="2026" selected>2026</option>
+                        <option value="2027">2027</option>
+                    </select>
+                </div>
+                <div class="scrollable-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Status (Select)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody"></tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 15px; text-align: right;">
+                    <button class="btn btn-save" onclick="saveAttendance()">Save Attendance</button>
+                </div>
+                <p id="attendanceMsg" class="msg"></p>
             </div>
+        </div>
 
-            <div style="margin-top: 20px; text-align: right;">
-                <button class="btn btn-save" onclick="saveAttendance()">Save Attendance</button>
+        <!-- 2. Marksheet Management Section (Collapsible) -->
+        <div class="accordion-box">
+            <div class="accordion-header" onclick="toggleAccordion('marksheetBody')">
+                <span>📊 Marksheet Management</span>
+                <span>▼</span>
             </div>
-            <p id="attendanceMsg"></p>
+            <div class="accordion-body" id="marksheetBody">
+                <div class="profile-grid" style="margin-top:0; margin-bottom:15px;">
+                    <div class="profile-item"><div class="profile-label">Exam Title</div><div class="profile-value"><input type="text" id="mark-exam" placeholder="e.g. Half Yearly Exam 2026"></div></div>
+                    <div class="profile-item"><div class="profile-label">Total Marks</div><div class="profile-value"><input type="text" id="mark-total" placeholder="e.g. 500"></div></div>
+                    <div class="profile-item"><div class="profile-label">Obtained Marks</div><div class="profile-value"><input type="text" id="mark-obtained" placeholder="e.g. 420"></div></div>
+                    <div class="profile-item"><div class="profile-label">Grade / Status</div><div class="profile-value"><input type="text" id="mark-grade" placeholder="e.g. Grade A (Passed)"></div></div>
+                </div>
+                <div class="profile-item" style="margin-bottom: 15px;">
+                    <div class="profile-label">Upload Marksheet Pic</div>
+                    <div class="profile-value" style="margin-top: 5px;">
+                        <input type="file" id="mark-file" accept="image/*" onchange="previewImage(event, 'mark-preview', 'mark')">
+                        <div style="margin-top: 10px;">
+                            <img id="mark-preview" src="" alt="Marksheet Preview" style="max-width: 180px; max-height: 180px; display: none; border-radius: 6px; border: 1px solid #cbd5e0;" />
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <button class="btn btn-danger" onclick="deleteMarksheet()">Delete Marksheet</button>
+                    <button class="btn btn-save" onclick="saveMarksheet()">Save Marksheet</button>
+                </div>
+                <p id="marksheetMsg" class="msg"></p>
+            </div>
+        </div>
+
+        <!-- 3. Admit Card Management Section (Collapsible) -->
+        <div class="accordion-box">
+            <div class="accordion-header" onclick="toggleAccordion('admitBody')">
+                <span>🪪 Admit Card Management</span>
+                <span>▼</span>
+            </div>
+            <div class="accordion-body" id="admitBody">
+                <div class="profile-grid" style="margin-top:0; margin-bottom:15px;">
+                    <div class="profile-item"><div class="profile-label">Exam Name</div><div class="profile-value"><input type="text" id="admit-exam" placeholder="e.g. Annual Exam 2026"></div></div>
+                    <div class="profile-item"><div class="profile-label">Roll Number</div><div class="profile-value"><input type="text" id="admit-roll" placeholder="e.g. VVPS/2026/001"></div></div>
+                    <div class="profile-item"><div class="profile-label">Exam Center</div><div class="profile-value"><input type="text" id="admit-center" placeholder="e.g. School Main Hall"></div></div>
+                    <div class="profile-item">
+                        <div class="profile-label">Admit Card Status</div>
+                        <div class="profile-value">
+                            <select id="admit-status">
+                                <option value="" disabled selected>-- Select Status --</option>
+                                <option value="Released">Released</option>
+                                <option value="Withheld">Withheld</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-item" style="margin-bottom: 15px;">
+                    <div class="profile-label">Upload Admit Card Pic</div>
+                    <div class="profile-value" style="margin-top: 5px;">
+                        <input type="file" id="admit-file" accept="image/*" onchange="previewImage(event, 'admit-preview', 'admit')">
+                        <div style="margin-top: 10px;">
+                            <img id="admit-preview" src="" alt="Admit Card Preview" style="max-width: 180px; max-height: 180px; display: none; border-radius: 6px; border: 1px solid #cbd5e0;" />
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <button class="btn btn-danger" onclick="deleteAdmitCard()">Delete Admit Card</button>
+                    <button class="btn btn-save" onclick="saveAdmitCard()">Save Admit Card</button>
+                </div>
+                <p id="admitMsg" class="msg"></p>
+            </div>
         </div>
 
     </div>
 
-    <!-- Firebase SDK & Database Logic -->
+    <!-- Firebase SDK & Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, updateDoc, collection, getDocs, deleteField } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA3XBCZ2ZTwfqT2y3EXrkW0LPEz4fj9tBc",
@@ -138,11 +316,21 @@
         const urlParams = new URLSearchParams(window.location.search);
         let studentId = urlParams.get('id');
 
+        if (studentId) {
+            document.getElementById("feeRegisterBtn").href = `fee-register.html?id=${studentId}`;
+        }
+
         let attendanceData = {};
         let studentDataGlobal = {};
         let isEditingDetails = false;
+        let markImageBase64 = "";
+        let admitImageBase64 = "";
 
-        const fields = ['studentName', 'admissionNo', 'className', 'fatherName', 'motherName', 'contactNo'];
+        const fields = [
+            'studentName', 'gender', 'dob', 'fatherName', 'className', 'section', 'rollNo', 'admissionNo', 
+            'motherName', 'guardianName', 'aadharNo', 'aadharName', 'contactNo', 
+            'cwsn', 'altMobileNo', 'admissionDate', 'category', 'height', 'weight', 'pen', 'bloodGroup'
+        ];
 
         async function fetchStudentProfile() {
             try {
@@ -155,6 +343,7 @@
                     if (!querySnapshot.empty) {
                         docSnap = querySnapshot.docs[0];
                         studentId = docSnap.id;
+                        document.getElementById("feeRegisterBtn").href = `fee-register.html?id=${studentId}`;
                     }
                 }
 
@@ -163,6 +352,7 @@
                     attendanceData = studentDataGlobal.attendance || {};
                     renderProfileView();
                     loadAttendanceTable();
+                    loadExtraSectionsData();
                 } else {
                     document.getElementById("display-studentName").innerText = "No student found.";
                 }
@@ -174,13 +364,28 @@
         function renderProfileView() {
             fields.forEach(field => {
                 const container = document.getElementById(`display-${field}`);
-                const val = studentDataGlobal[field] || '';
+                if (!container) return;
+                let val = studentDataGlobal[field] || '';
                 
                 if (isEditingDetails) {
                     if (field === 'className') {
                         const classOptions = ["Nursery", "LKG", "UKG", "Class 1st", "Class 2nd", "Class 3rd", "Class 4th", "Class 5th", "Class 6th", "Class 7th", "Class 8th", "Class 9th", "Class 10th"];
-                        let optionsHtml = classOptions.map(cls => `<option value="${cls}" ${val.toLowerCase().trim() === cls.toLowerCase().trim() ? 'selected' : ''}>${cls}</option>`).join('');
+                        let optionsHtml = classOptions.map(cls => `<option value="${cls}" ${(studentDataGlobal[field] || '').toLowerCase().trim() === cls.toLowerCase().trim() ? 'selected' : ''}>${cls}</option>`).join('');
                         container.innerHTML = `<select id="input-${field}">${optionsHtml}</select>`;
+                    } else if (field === 'gender') {
+                        const genderOptions = ["Male", "Female", "Other", "N/A"];
+                        let optionsHtml = genderOptions.map(g => `<option value="${g}" ${(val || 'N/A').toLowerCase() === g.toLowerCase() ? 'selected' : ''}>${g}</option>`).join('');
+                        container.innerHTML = `<select id="input-${field}">${optionsHtml}</select>`;
+                    } else if (field === 'category') {
+                        const catOptions = ["General", "OBC", "SC", "ST", "EWS", "Other"];
+                        let optionsHtml = catOptions.map(c => `<option value="${c}" ${(val || '').toLowerCase() === c.toLowerCase() ? 'selected' : ''}>${c}</option>`).join('');
+                        container.innerHTML = `<select id="input-${field}">${optionsHtml}</select>`;
+                    } else if (field === 'bloodGroup') {
+                        const bgOptions = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "N/A"];
+                        let optionsHtml = bgOptions.map(b => `<option value="${b}" ${(val || '').toLowerCase() === b.toLowerCase() ? 'selected' : ''}>${b}</option>`).join('');
+                        container.innerHTML = `<select id="input-${field}">${optionsHtml}</select>`;
+                    } else if (field === 'dob' || field === 'admissionDate') {
+                        container.innerHTML = `<input type="date" id="input-${field}" value="${val}">`;
                     } else {
                         container.innerHTML = `<input type="text" id="input-${field}" value="${val}">`;
                     }
@@ -198,6 +403,55 @@
             }
         }
 
+        function loadExtraSectionsData() {
+            if(studentDataGlobal.marksheet) {
+                document.getElementById("mark-exam").value = studentDataGlobal.marksheet.exam || "";
+                document.getElementById("mark-total").value = studentDataGlobal.marksheet.totalMarks || "";
+                document.getElementById("mark-obtained").value = studentDataGlobal.marksheet.obtained || "";
+                document.getElementById("mark-grade").value = studentDataGlobal.marksheet.grade || "";
+                if(studentDataGlobal.marksheet.image) {
+                    markImageBase64 = studentDataGlobal.marksheet.image;
+                    const prev = document.getElementById("mark-preview");
+                    prev.src = markImageBase64;
+                    prev.style.display = "block";
+                }
+            }
+            if(studentDataGlobal.admitCard) {
+                document.getElementById("admit-exam").value = studentDataGlobal.admitCard.examName || "";
+                document.getElementById("admit-roll").value = studentDataGlobal.admitCard.rollNo || "";
+                document.getElementById("admit-center").value = studentDataGlobal.admitCard.examCenter || "";
+                if(studentDataGlobal.admitCard.status) {
+                    document.getElementById("admit-status").value = studentDataGlobal.admitCard.status;
+                }
+                if(studentDataGlobal.admitCard.image) {
+                    admitImageBase64 = studentDataGlobal.admitCard.image;
+                    const prev = document.getElementById("admit-preview");
+                    prev.src = admitImageBase64;
+                    prev.style.display = "block";
+                }
+            }
+        }
+
+        window.toggleAccordion = function(id) {
+            const body = document.getElementById(id);
+            body.classList.toggle("active");
+        }
+
+        window.previewImage = function(event, previewId, type) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById(previewId);
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                    if (type === 'mark') markImageBase64 = e.target.result;
+                    if (type === 'admit') admitImageBase64 = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         window.toggleEditDetails = function() {
             isEditingDetails = !isEditingDetails;
             renderProfileView();
@@ -209,8 +463,9 @@
             fields.forEach(field => {
                 const inputElem = document.getElementById(`input-${field}`);
                 if (inputElem) {
-                    updatedData[field] = inputElem.value;
-                    studentDataGlobal[field] = inputElem.value;
+                    let valueToSave = inputElem.value;
+                    updatedData[field] = valueToSave;
+                    studentDataGlobal[field] = valueToSave;
                 }
             });
 
@@ -226,7 +481,7 @@
             }
         };
 
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
         function getDaysInMonth(month, year) {
             return new Date(year, month + 1, 0).getDate();
@@ -243,22 +498,21 @@
                 let dayStr = i < 10 ? "0" + i : "" + i;
                 let monthStr = (month + 1) < 10 ? "0" + (month + 1) : "" + (month + 1);
                 let dateKey = `${year}-${monthStr}-${dayStr}`;
-                let formattedDate = `${dayStr} ${monthNames[month].substring(0,3)} ${year}`;
+                let formattedDate = `${dayStr} ${monthNames[month]}`; 
 
                 let currentVal = attendanceData[dateKey] || "Not Marked";
-
-                let colorStyle = "color: #888;";
-                if (currentVal.includes("Present")) colorStyle = "color: #2e7d32; font-weight: bold;";
-                else if (currentVal.includes("Absent")) colorStyle = "color: #c62828; font-weight: bold;";
+                let colorStyle = "color: #777;";
+                if (currentVal.includes("Present")) colorStyle = "color: #10b981; font-weight: 600;";
+                else if (currentVal.includes("Absent")) colorStyle = "color: #ef4444; font-weight: 600;";
 
                 let tr = document.createElement("tr");
                 tr.innerHTML = `
-                    <td>${formattedDate}</td>
+                    <td style="white-space: nowrap;">${formattedDate}</td>
                     <td>
-                        <select class="attendance-select" id="att-${dateKey}" style="${colorStyle}" onchange="changeColor(this)">
-                            <option value="Not Marked" ${currentVal === "Not Marked" ? "selected" : ""}>Not Marked</option>
-                            <option value="Present (P)" ${currentVal === "Present (P)" ? "selected" : ""}>Present (P)</option>
-                            <option value="Absent (A)" ${currentVal === "Absent (A)" ? "selected" : ""}>Absent (A)</option>
+                        <select class="table-select" id="att-${dateKey}" style="${colorStyle}" onchange="changeColor(this)">
+                            <option value="Not Marked" ${currentVal === "Not Marked" ? "selected" : ""}>-</option>
+                            <option value="Present (P)" ${currentVal === "Present (P)" ? "selected" : ""}>Present</option>
+                            <option value="Absent (A)" ${currentVal === "Absent (A)" ? "selected" : ""}>Absent</option>
                         </select>
                     </td>
                 `;
@@ -269,13 +523,13 @@
         window.changeColor = function(selectElem) {
             let newVal = selectElem.value;
             if (newVal.includes("Present")) {
-                selectElem.style.color = "#2e7d32";
-                selectElem.style.fontWeight = "bold";
+                selectElem.style.color = "#10b981";
+                selectElem.style.fontWeight = "600";
             } else if (newVal.includes("Absent")) {
-                selectElem.style.color = "#c62828";
-                selectElem.style.fontWeight = "bold";
+                selectElem.style.color = "#ef4444";
+                selectElem.style.fontWeight = "600";
             } else {
-                selectElem.style.color = "#888";
+                selectElem.style.color = "#777";
                 selectElem.style.fontWeight = "normal";
             }
         }
@@ -290,7 +544,6 @@
                 let dayStr = i < 10 ? "0" + i : "" + i;
                 let monthStr = (month + 1) < 10 ? "0" + (month + 1) : "" + (month + 1);
                 let dateKey = `${year}-${monthStr}-${dayStr}`;
-
                 let selectElem = document.getElementById(`att-${dateKey}`);
                 if (selectElem) {
                     attendanceData[dateKey] = selectElem.value;
@@ -299,21 +552,108 @@
 
             try {
                 const docRef = doc(db, "students", studentId);
-                await updateDoc(docRef, {
-                    attendance: attendanceData
-                });
-
+                await updateDoc(docRef, { attendance: attendanceData });
                 const msg = document.getElementById("attendanceMsg");
-                msg.innerText = "Attendance updated successfully in Firebase! 🎉";
-                msg.style.color = "#2E7D32";
-                setTimeout(() => { msg.innerText = ""; }, 4000);
+                msg.innerText = "Attendance saved! ✓";
+                setTimeout(() => { msg.innerText = ""; }, 3000);
             } catch (error) {
                 console.error("Error updating attendance: ", error);
-                const msg = document.getElementById("attendanceMsg");
-                msg.innerText = "Error: " + error.message;
-                msg.style.color = "#c62828";
             }
         }
+
+        window.saveMarksheet = async function() {
+            if (!studentId) return;
+            const marksObj = {
+                exam: document.getElementById("mark-exam").value,
+                totalMarks: document.getElementById("mark-total").value,
+                obtained: document.getElementById("mark-obtained").value,
+                grade: document.getElementById("mark-grade").value,
+                image: markImageBase64
+            };
+            try {
+                const docRef = doc(db, "students", studentId);
+                await updateDoc(docRef, { marksheet: marksObj });
+                const msg = document.getElementById("marksheetMsg");
+                msg.innerText = "Marksheet saved successfully! ✓";
+                setTimeout(() => { msg.innerText = ""; }, 3000);
+            } catch (error) {
+                console.error("Error saving marksheet: ", error);
+                alert("Error saving marksheet: " + error.message);
+            }
+        };
+
+        window.deleteMarksheet = async function() {
+            if (!studentId) return;
+            if (!confirm("Are you sure you want to delete this marksheet?")) return;
+            try {
+                const docRef = doc(db, "students", studentId);
+                await updateDoc(docRef, { marksheet: deleteField() });
+                
+                document.getElementById("mark-exam").value = "";
+                document.getElementById("mark-total").value = "";
+                document.getElementById("mark-obtained").value = "";
+                document.getElementById("mark-grade").value = "";
+                document.getElementById("mark-file").value = "";
+                markImageBase64 = "";
+                const prev = document.getElementById("mark-preview");
+                prev.src = "";
+                prev.style.display = "none";
+
+                const msg = document.getElementById("marksheetMsg");
+                msg.innerText = "Marksheet deleted successfully! ✓";
+                setTimeout(() => { msg.innerText = ""; }, 3000);
+            } catch (error) {
+                console.error("Error deleting marksheet: ", error);
+                alert("Error: " + error.message);
+            }
+        };
+
+        window.saveAdmitCard = async function() {
+            if (!studentId) return;
+            const admitObj = {
+                examName: document.getElementById("admit-exam").value,
+                rollNo: document.getElementById("admit-roll").value,
+                examCenter: document.getElementById("admit-center").value,
+                status: document.getElementById("admit-status").value,
+                image: admitImageBase64
+            };
+            try {
+                const docRef = doc(db, "students", studentId);
+                await updateDoc(docRef, { admitCard: admitObj });
+                const msg = document.getElementById("admitMsg");
+                msg.innerText = "Admit Card saved successfully! ✓";
+                setTimeout(() => { msg.innerText = ""; }, 3000);
+            } catch (error) {
+                console.error("Error saving admit card: ", error);
+                alert("Error saving admit card: " + error.message);
+            }
+        };
+
+        window.deleteAdmitCard = async function() {
+            if (!studentId) return;
+            if (!confirm("Are you sure you want to delete this admit card?")) return;
+            try {
+                const docRef = doc(db, "students", studentId);
+                await updateDoc(docRef, { admitCard: deleteField() });
+                
+                document.getElementById("admit-exam").value = "";
+                document.getElementById("admit-roll").value = "";
+                document.getElementById("admit-center").value = "";
+                document.getElementById("admit-status").selectedIndex = 0;
+                document.getElementById("admit-file").value = "";
+                admitImageBase64 = "";
+                const prev = document.getElementById("admit-preview");
+                prev.src = "";
+                prev.style.display = "none";
+
+                const msg = document.getElementById("admitMsg");
+                msg.innerText = "Admit Card deleted successfully! ✓";
+                setTimeout(() => { msg.innerText = ""; }, 3000);
+            } catch (error) {
+                console.error("Error deleting admit card: ", error);
+                alert("Error: " + error.message);
+            }
+        };
 
         window.addEventListener('DOMContentLoaded', fetchStudentProfile);
     </script>

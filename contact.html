@@ -4,26 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Vidya Vihar Public School</title>
+
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background-color: #f9f9f9; 
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
         }
-        header { 
-            background-color: #1B5E20; 
-            color: white; 
-            text-align: center; 
-            padding: 30px 20px; 
+
+        body {
+            display: grid;
+            grid-template-rows: auto auto 1fr auto;
+            min-height: 100vh;
+            min-height: 100dvh;
         }
-        header h1 { 
-            margin: 0; 
-            font-size: 36px; 
+
+        header {
+            background-color: #1B5E20;
+            color: white;
+            text-align: center;
+            padding: 20px 30px;
+            position: relative;
         }
-        header p { 
-            color: #ffffff; 
-            font-size: 18px; 
+
+        /* School Logo */
+        .header-logo {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffffff;
+            background-color: #0B192C;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        header p {
+            color: #ffffff;
+            font-size: 18px;
             margin-top: 5px;
         }
 
@@ -36,6 +65,7 @@
             padding: 12px 20px;
             position: relative;
         }
+
         .nav-links {
             list-style: none;
             display: flex;
@@ -43,15 +73,18 @@
             padding: 0;
             align-items: center;
         }
+
         .nav-links li {
             margin: 0 15px;
         }
+
         .nav-links li a {
             color: white;
             text-decoration: none;
             font-size: 16px;
             font-weight: bold;
         }
+
         .nav-links li a:hover {
             text-decoration: underline;
         }
@@ -61,6 +94,7 @@
             display: none;
             cursor: pointer;
         }
+
         .menu-toggle .bar {
             display: block;
             width: 28px;
@@ -84,115 +118,181 @@
             cursor: pointer;
         }
 
-        /* Mobile Screen ke liye (Slide-out Menu) */
+        /* Mobile Screen ke liye (Slide-out Menu from LEFT) */
         @media screen and (max-width: 900px) {
+
+            header {
+                padding: 15px 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .header-logo {
+                position: static;
+                transform: none;
+                width: 50px;
+                height: 50px;
+                margin-right: 12px;
+                flex-shrink: 0;
+            }
+
+            header h1 {
+                font-size: 18px;
+            }
+
+            header p {
+                font-size: 11px;
+            }
+
             nav {
                 justify-content: flex-start;
             }
+
             .menu-toggle {
                 display: block;
                 z-index: 1001;
             }
+
             .menu-close-btn {
                 display: block;
             }
+
             .nav-links {
                 position: fixed;
-                right: -100%;
+                left: -100%;
                 top: 0;
                 flex-direction: column;
                 background-color: #1B5E20;
                 width: 250px;
                 height: 100vh;
                 padding-top: 70px;
-                transition: right 0.4s ease-in-out;
-                box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+                transition: left 0.4s ease-in-out;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.3);
                 z-index: 1000;
                 align-items: center;
             }
+
             .nav-links li {
                 margin: 20px 0;
                 text-align: center;
             }
+
             .nav-links li a {
                 font-size: 18px;
             }
+
             .nav-links.active {
-                right: 0;
+                left: 0;
+            }
+
+            .container {
+                margin: 15px auto !important;
             }
         }
 
-        .container { 
-            max-width: 800px; 
-            margin: 30px auto; 
-            background: white; 
-            padding: 30px; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
-            border-radius: 8px; 
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
         }
-        h2 { 
-            color: #1B5E20; 
+
+        h2 {
+            color: #1B5E20;
         }
-        p { 
-            font-size: 18px; 
-            line-height: 1.6; 
-            color: #333; 
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
         }
-        /* Footer text color explicitly set to white */
+
+        /* Footer */
         footer {
             background-color: #1B5E20;
             color: white;
             text-align: center;
             padding: 15px;
-            margin-top: 40px;
+            margin-top: 0;
         }
+
         footer p {
             color: white;
             margin: 5px 0;
         }
+
     </style>
 </head>
+
 <body>
 
     <header>
-        <h1>VIDYA VIHAR PUBLIC SCHOOL</h1>
-        <p>📞 Get in Touch With Us ✉️</p>
+
+        <img src="school-logo.png" alt="School Logo" class="header-logo">
+
+        <div>
+            <h1>VIDYA VIHAR SCHOOL</h1>
+            <p>📞 Get in Touch With Us ✉️</p>
+        </div>
+
     </header>
 
     <!-- Navigation Menu with Correct Links, Hamburger & Close Button -->
     <nav>
+
         <div class="menu-toggle" id="mobile-menu">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
         </div>
+
         <ul class="nav-links" id="nav-links">
+
             <button class="menu-close-btn" id="menu-close">&times;</button>
+
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About Us</a></li>
             <li><a href="admission.html">Admissions</a></li>
             <li><a href="gallery.html">Gallery</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="login.html">🔐 Login Portal</a></li>
+
         </ul>
+
     </nav>
 
     <div class="container">
+
         <h2>📍 Contact Information</h2>
-        <p><strong>🏠 Address:</strong> Vidya Vihar Public School Campus, Basantpur road, Katkamsandi</p>
-        <p><strong>📱 Phone:</strong> +91-9876543210 / +91-9123456789</p>
-        <p><strong>📧 Email:</strong> contact@vidyavihar.com</p>
+
+        <p><strong>🏠 Address:</strong> Vidya Vihar School Campus, Basantpur road, Katkamsandi</p>
+
+        <p><strong>📱 Phone:</strong> +91-8002705409 / +91-9470174347</p>
+
+        <p><strong>📧 Email:</strong> vidyavihar06@gmail.com</p>
+
         <p><strong>🕒 Office Hours:</strong> Monday to Saturday - 8:00 AM to 2:00 PM</p>
+
     </div>
 
     <!-- Footer with White Text -->
     <footer>
-        <p>&copy; 2026 VIDYA VIHAR PUBLIC SCHOOL. All Rights Reserved.</p>
-        <p>Email: contact@vidyavihar.com | Phone: +91-9876543210</p>
+
+        <p>&copy; VIDYA VIHAR SCHOOL. All Rights Reserved.</p>
+
+        <p>Email: vidyavihar06@gmail.com| Phone: +91-8002705409</p>
+
+        <p>UDISE code:20041003611 | JAC code:210960</p>
+
     </footer>
 
     <!-- JavaScript for Hamburger Menu Toggle & Close -->
     <script>
+
         const mobileMenu = document.getElementById('mobile-menu');
         const menuClose = document.getElementById('menu-close');
         const navLinks = document.getElementById('nav-links');
@@ -204,6 +304,8 @@
         menuClose.addEventListener('click', () => {
             navLinks.classList.remove('active');
         });
+
     </script>
+
 </body>
 </html>

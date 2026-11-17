@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Register - Vidya Vihar Public School</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; }
+        
+        header { 
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
+            color: white; 
+            padding: 22px 35px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        header h1 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.5px; }
+        
+        .back-btn { 
+            background-color: #ffffff; 
+            color: #0f2027; 
+            padding: 8px 18px; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            font-size: 14px; 
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .back-btn:hover { background-color: #e2e8f0; transform: translateY(-1px); }
+        
+        .container { 
+            max-width: 900px; 
+            margin: 35px auto; 
+            background: white; 
+            padding: 35px; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); 
+            border-top: 6px solid;
+            border-image: linear-gradient(135deg, #11998e, #38ef7d) 1;
+        }
+        
+        .top-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid #edf2f7; padding-bottom: 12px; margin-bottom: 20px; }
+        h2 { color: #0f2027; margin: 0; font-size: 20px; }
+        
+        .year-selector { display: flex; align-items: center; gap: 10px; }
+        .year-selector label { font-weight: 600; color: #4a5568; font-size: 13px; }
+        .year-selector select { padding: 6px 12px; font-size: 13px; border-radius: 6px; border: 1px solid #cbd5e0; font-weight: bold; color: #1e3c72; background: white; }
+
+        .student-info { background: #e3f2fd; padding: 12px 18px; border-radius: 8px; margin-bottom: 20px; font-weight: 600; color: #1e3c72; font-size: 14px; border: 1px solid #bbdefb; }
+        
+        .month-item { border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px; overflow: hidden; background: #fafafa; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .month-header { padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 600; color: #2d3748; background: #fff; font-size: 14px; transition: background 0.2s; }
+        .month-header:hover { background: #f8fafc; }
+        
+        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+        .status-paid { background: #c8e6c9; color: #2e7d32; }
+        .status-due { background: #ffcdd2; color: #c62828; }
+        .status-pending { background: #ffe0b2; color: #ef6c00; }
+        
+        .month-body { padding: 20px; background: #fafafa; border-top: 1px solid #e2e8f0; display: none; }
+        .month-body.active { display: block; }
+
+        .form-row { display: flex; align-items: center; margin-bottom: 12px; }
+        .form-label { flex: 1; font-weight: 600; color: #4a5568; font-size: 13px; }
+        .form-input { flex: 2; }
+        .form-input input, .form-input select { width: 100%; padding: 8px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px; box-sizing: border-box; background: #fff; }
+
+        .btn-save { background-color: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; box-shadow: 0 2px 5px rgba(16,185,129,0.3); transition: all 0.2s; }
+        .btn-save:hover { background-color: #059669; }
+        .msg { margin-top: 8px; font-weight: bold; text-align: right; font-size: 13px; color: #10b981; }
+
+        @media screen and (max-width: 600px) {
+            header { padding: 15px; flex-direction: column; align-items: flex-start; }
+            header h1 { font-size: 18px; }
+            .container { margin: 15px; padding: 20px; }
+            .top-flex { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .form-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+            .form-label { width: 100%; }
+            .form-input { width: 100%; }
+            .month-header { padding: 10px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>💰 Month-wise Fee Register</h1>
+        <a href="#" id="backProfileBtn" class="back-btn">← Back</a>
+    </header>
+
+    <div class="container">
+        <div class="top-flex">
+            <h2>Student Fee Register</h2>
+            <div class="year-selector">
+                <label>Year:</label>
+                <select id="viewYear" onchange="renderMonthsList()">
+                    <option value="2025">2025</option>
+                    <option value="2026" selected>2026</option>
+                    <option value="2027">2027</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="student-info" id="studentDetailsBox">Loading student info...</div>
+
+        <div id="monthsContainer"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3XBCZ2ZTwfqT2y3EXrkW0LPEz4fj9tBc",
+            authDomain: "vidya-vihar-public-schoo-f3b61.firebaseapp.com",
+            projectId: "vidya-vihar-public-schoo-f3b61",
+            storageBucket: "vidya-vihar-public-schoo-f3b61.firebasestorage.app",
+            messagingSenderId: "872134534556",
+            appId: "1:872134534556:web:7fb8ea167c2947b5c05459"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let studentId = urlParams.get('id');
+
+        if (studentId) {
+            document.getElementById("backProfileBtn").href = `student-profile.html?id=${studentId}`;
+        }
+
+        const months = [
+            "January", "February", "March", "April", "May", "June", 
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        let studentDataGlobal = {};
+        let monthlyFeesData = {};
+
+        async function fetchStudentFeeData() {
+            if (!studentId) {
+                document.getElementById("studentDetailsBox").innerText = "No student ID provided.";
+                return;
+            }
+
+            try {
+                const docRef = doc(db, "students", studentId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    studentDataGlobal = docSnap.data();
+                    monthlyFeesData = studentDataGlobal.monthlyFees || {};
+                    
+                    document.getElementById("studentDetailsBox").innerText = `Student: ${studentDataGlobal.studentName || 'N/A'} | Adm No: ${studentDataGlobal.admissionNo || 'N/A'} | Class: ${studentDataGlobal.className || 'N/A'}`;
+                    
+                    renderMonthsList();
+                } else {
+                    document.getElementById("studentDetailsBox").innerText = "Student record not found.";
+                }
+            } catch (error) {
+                console.error("Error fetching fee data: ", error);
+            }
+        }
+
+        window.renderMonthsList = function() {
+            const container = document.getElementById("monthsContainer");
+            container.innerHTML = "";
+            const selectedYear = document.getElementById("viewYear").value;
+
+            const yearData = monthlyFeesData[selectedYear] || {};
+
+            months.forEach((month, index) => {
+                const mData = yearData[month] || { total: "", paid: "", due: "", status: "Due" };
+                
+                let badgeClass = "status-due";
+                if (mData.status === "Paid") badgeClass = "status-paid";
+                else if (mData.status === "Pending") badgeClass = "status-pending";
+
+                const item = document.createElement("div");
+                item.className = "month-item";
+                item.innerHTML = `
+                    <div class="month-header" onclick="toggleAccordion(${index})">
+                        <span>📅 ${month}</span>
+                        <span class="status-badge ${badgeClass}" id="badge-${index}">${mData.status}</span>
+                    </div>
+                    <div class="month-body" id="body-${index}">
+                        <div class="form-row">
+                            <div class="form-label">Total Fee (₹):</div>
+                            <div class="form-input"><input type="number" id="total-${index}" value="${mData.total || ''}" placeholder="Enter total fee"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Paid Amount (₹):</div>
+                            <div class="form-input"><input type="number" id="paid-${index}" value="${mData.paid || ''}" placeholder="Enter paid amount"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Due Amount (₹):</div>
+                            <div class="form-input"><input type="number" id="due-${index}" value="${mData.due || ''}" placeholder="Enter due amount"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Payment Status:</div>
+                            <div class="form-input">
+                                <select id="status-${index}">
+                                    <option value="Paid" ${mData.status === 'Paid' ? 'selected' : ''}>Paid</option>
+                                    <option value="Pending" ${mData.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="Due" ${mData.status === 'Due' ? 'selected' : ''}>Due</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <button class="btn-save" onclick="saveMonthFee('${month}', ${index})">Save ${month}</button>
+                        </div>
+                        <p class="msg" id="msg-${index}"></p>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        window.toggleAccordion = function(index) {
+            const body = document.getElementById(`body-${index}`);
+            body.classList.toggle("active");
+        }
+
+        window.saveMonthFee = async function(month, index) {
+            if (!studentId) return;
+
+            const selectedYear = document.getElementById("viewYear").value;
+            const total = document.getElementById(`total-${index}`).value;
+            const paid = document.getElementById(`paid-${index}`).value;
+            const due = document.getElementById(`due-${index}`).value;
+            const status = document.getElementById(`status-${index}`).value;
+
+            if (!monthlyFeesData[selectedYear]) {
+                monthlyFeesData[selectedYear] = {};
+            }
+
+            monthlyFeesData[selectedYear][month] = { total, paid, due, status };
+
+            try {
+                const docRef = doc(db, "students", studentId);
+                await updateDoc(docRef, { monthlyFees: monthlyFeesData });
+
+                const badge = document.getElementById(`badge-${index}`);
+                badge.innerText = status;
+                badge.className = "status-badge " + (status === "Paid" ? "status-paid" : status === "Pending" ? "status-pending" : "status-due");
+
+                const msg = document.getElementById(`msg-${index}`);
+                msg.innerText = "Saved! ✓";
+                setTimeout(() => { msg.innerText = ""; }, 2500);
+            } catch (error) {
+                console.error("Error saving month fee: ", error);
+                alert("Error saving: " + error.message);
+            }
+        };
+
+        window.addEventListener('DOMContentLoaded', fetchStudentFeeData);
+    </script>
+
+</body>
+</html>
